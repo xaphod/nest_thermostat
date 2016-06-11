@@ -69,7 +69,7 @@ module NestThermostat
     alias_method :current_temp, :current_temperature
 
     def hvac_mode
-      status["device"][self.device_id]["hvac_mode"]
+      status["shared"][self.device_id]["hvac_mode"]
     end
 
     def hvac_mode=(mode)
@@ -81,7 +81,7 @@ module NestThermostat
     end
 
     def hvac_state
-      status["device"][self.device_id]["hvac_state"]
+      status["shared"][self.device_id]["hvac_state"]
     end
 
     def temperature
