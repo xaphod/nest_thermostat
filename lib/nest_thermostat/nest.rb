@@ -68,6 +68,22 @@ module NestThermostat
     end
     alias_method :current_temp, :current_temperature
 
+    def hvac_mode
+      status["device"][self.device_id]["hvac_mode"]
+    end
+
+    def hvac_mode=(mode)
+      request = HTTParty.post(
+          "#{self.transport_url}/v2/put/shared.#{self.device_id}",
+          body: %Q({"target_change_pending":true,"hvac_mode":#{mode}}),
+          headers: self.headers
+      ) rescue nil
+    end
+
+    def hvac_state
+      status["device"][self.device_id]["hvac_state"]
+    end
+
     def temperature
       convert_temp_for_get(status["shared"][self.device_id]["target_temperature"])
     end
