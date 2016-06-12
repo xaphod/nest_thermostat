@@ -68,20 +68,24 @@ module NestThermostat
     end
     alias_method :current_temp, :current_temperature
 
+    def compressor_lockout
+      status["shared"][self.device_id]["compressor_lockout_enabled"]
+    end
+
     def hvac_mode
-      status["shared"][self.device_id]["hvac_mode"]
+      status["shared"][self.device_id]["target_temperature_type"]
     end
 
-    def hvac_mode=(mode)
-      request = HTTParty.post(
-          "#{self.transport_url}/v2/put/shared.#{self.device_id}",
-          body: %Q({"target_change_pending":true,"hvac_mode":#{mode}}),
-          headers: self.headers
-      ) rescue nil
+    def hvac_fan_on
+      status["shared"][self.device_id]["hvac_fan_state"]
     end
 
-    def hvac_state
-      status["shared"][self.device_id]["hvac_state"]
+    def hvac_heat_on
+      status["shared"][self.device_id]["hvac_heater_state"]
+    end
+
+    def hvac_ac_on
+      status["shared"][self.device_id]["hvac_ac_state"]
     end
 
     def temperature
